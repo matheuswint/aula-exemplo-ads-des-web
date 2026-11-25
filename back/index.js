@@ -30,11 +30,31 @@ app.get("/api/v1/pessoas", (req, res) => {
 })
  
 //U - update - atualizar
-app.put("/api/Alterarpessoa/:id", (req,res) => {
+app.put("/api/v1/alterarpessoa/:id", (req,res) => {
+    const id = req.params.id;
+ 
+    const altera = db.findIndex(p => p.id == id);
+ 
+    if (altera === -1){
+    return res.status(404).json({ message: 'não encontrado'})
+    }
+ 
+    db[altera] = req.body;
+    res.status(201).json(db[altera])
 })
  
 //D
-app.delete("/api/pessoa:id", (req,res) => {
+app.delete("/api/v1/pessoa/:id", (req,res) => {
+    const id = req.params.id;
+ 
+    const alterar = db.findIndex(p => p.id == id);
+ 
+    if (id === -1){
+    return res.status(404).json('não encontrado')
+    }
+ 
+    db.splice(alterar, 1);
+    res.status(201).json({ message: 'excluido com sucesso'})
 });
  
 app.listen(port, () => {
